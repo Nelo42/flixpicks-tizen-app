@@ -1,0 +1,41 @@
+# Tizen Build Output
+.buildResult/
+*.wgt
+*.tpk
+
+# Tizen Studio
+.tizen-studio-data/
+
+# Certificates and Keys (Sensitive - Do NOT commit)
+*.csr
+*.pri
+*.crt
+*.p12
+*.pem
+*.key
+device-profile.xml
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build scripts (optional - keep if you want)
+# build.sh
+# deploy.sh
+# setup-certificate.sh
+

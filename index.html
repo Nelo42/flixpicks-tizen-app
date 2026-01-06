@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>FlixPicks</title>
+    
+    <!-- Prevent zoom and scaling on TV -->
+    <meta name="viewport" content="width=1920, height=1080, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- TV-optimized fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <img src="assets/images/logo.svg" alt="FlixPicks" class="loading-logo">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container" style="display: none;">
+        
+        <!-- Global Background -->
+        <div id="appBackground" class="app-background"></div>
+        
+        <!-- Header -->
+        <header id="header" class="header">
+            <div class="header-left">
+                <img src="assets/images/logo.svg" alt="FlixPicks" class="header-logo">
+            </div>
+            <nav class="header-nav" id="headerNav">
+                <button class="nav-btn focusable active" data-view="home" data-focus-row="header">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Home</span>
+                </button>
+                <button class="nav-btn focusable" data-view="browse" data-focus-row="header">
+                    <span class="nav-icon">🎬</span>
+                    <span class="nav-label">Browse</span>
+                </button>
+                <button class="nav-btn focusable" data-view="askFlick" data-focus-row="header">
+                    <span class="nav-icon">🤖</span>
+                    <span class="nav-label">Ask Flick</span>
+                </button>
+                <button class="nav-btn focusable" data-view="recommendations" data-focus-row="header">
+                    <span class="nav-icon">✨</span>
+                    <span class="nav-label">Flix Picks</span>
+                </button>
+                <button class="nav-btn focusable" data-view="inProgress" data-focus-row="header">
+                    <span class="nav-icon">▶️</span>
+                    <span class="nav-label">Continue</span>
+                </button>
+                <button class="nav-btn focusable" data-view="watchlist" data-focus-row="header">
+                    <span class="nav-icon">📑</span>
+                    <span class="nav-label">Watchlist</span>
+                </button>
+                <button class="nav-btn focusable" data-view="devices" data-focus-row="header">
+                    <span class="nav-icon">📺</span>
+                    <span class="nav-label">Devices</span>
+                </button>
+            </nav>
+            <div class="header-right">
+                <div class="connection-status" id="connectionStatus">
+                    <span class="status-dot disconnected"></span>
+                    <span class="status-text">Not Connected</span>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <!-- Guest state -->
+                    <button class="user-btn focusable" id="signInBtn" data-focus-row="header">
+                        <span class="user-icon">👤</span>
+                        <span class="user-label" id="guestLabel">Sign In</span>
+                    </button>
+                    
+                    <!-- Signed in state -->
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <span class="user-avatar" id="userAvatar">👤</span>
+                        <span class="user-name" id="headerUserName">User</span>
+                        <button class="sign-out-btn focusable" id="signOutBtn" data-focus-row="header" title="Sign Out">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <main id="mainContent" class="main-content">
+            
+            <!-- Home View -->
+            <section id="homeView" class="view active">
+                <!-- Hero Carousel -->
+                <div id="heroCarousel" class="hero-carousel">
+                    <div class="carousel-backdrop" id="carouselBackdrop"></div>
+                    <div class="carousel-gradient"></div>
+                    
+                    <!-- Carousel Items -->
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- Carousel items will be dynamically populated -->
+                    </div>
+                    
+                    <!-- Current Item Info -->
+                    <div class="carousel-content">
+                        <h1 class="carousel-title" id="carouselTitle">Loading...</h1>
+                        <p class="carousel-overview" id="carouselOverview"></p>
+                        <div class="carousel-meta" id="carouselMeta"></div>
+                        <div class="carousel-actions">
+                            <button class="btn btn-primary focusable" id="carouselPlayBtn" data-focus-row="carousel">
+                                <span class="btn-icon">▶</span>
+                                Play on Device
+                            </button>
+                            <button class="btn btn-secondary focusable" id="carouselDetailsBtn" data-focus-row="carousel">
+                                <span class="btn-icon">ℹ</span>
+                                More Info
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Carousel Navigation -->
+                    <div class="carousel-nav">
+                        <button class="carousel-nav-btn focusable" id="carouselPrev" data-focus-row="carousel-nav">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="carousel-dots" id="carouselDots">
+                            <!-- Dots will be dynamically populated -->
+                        </div>
+                        <button class="carousel-nav-btn focusable" id="carouselNext" data-focus-row="carousel-nav">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Content Rows -->
+                <div class="content-rows" id="homeRows">
+                    <!-- Rows will be dynamically populated -->
+                </div>
+            </section>
+
+            <!-- Browse View -->
+            <section id="browseView" class="view">
+                <div class="browse-header">
+                    <h2 class="view-title">Browse</h2>
+                    
+                    <!-- Enhanced Filter Bar -->
+                    <div class="filter-bar" id="filterBar">
+                        <!-- Type Toggle -->
+                        <div class="filter-group type-toggle">
+                            <button class="type-btn focusable active" data-value="movie" data-focus-row="filters">
+                                Movies
+                            </button>
+                            <button class="type-btn focusable" data-value="tv" data-focus-row="filters">
+                                TV Shows
+                            </button>
+                        </div>
+                        
+                        <!-- Filter Buttons -->
+                        <button class="filter-btn-dropdown focusable" id="genreFilterBtn" data-focus-row="filters">
+                            <span class="filter-label">Genre</span>
+                            <span class="filter-value" id="genreFilterValue">All</span>
+                            <span class="filter-arrow">▼</span>
+                        </button>
+                        
+                        <button class="filter-btn-dropdown focusable" id="decadeFilterBtn" data-focus-row="filters">
+                            <span class="filter-label">Decade</span>
+                            <span class="filter-value" id="decadeFilterValue">All Time</span>
+                            <span class="filter-arrow">▼</span>
+                        </button>
+                        
+                        <button class="filter-btn-dropdown focusable" id="languageFilterBtn" data-focus-row="filters">
+                            <span class="filter-label">Language</span>
+                            <span class="filter-value" id="languageFilterValue">All</span>
+                            <span class="filter-arrow">▼</span>
+                        </button>
+                        
+                        <button class="filter-btn-dropdown focusable" id="ratingFilterBtn" data-focus-row="filters">
+                            <span class="filter-label">Rating</span>
+                            <span class="filter-value" id="ratingFilterValue">Any</span>
+                            <span class="filter-arrow">▼</span>
+                        </button>
+                        
+                        <button class="filter-btn-dropdown focusable" id="sortFilterBtn" data-focus-row="filters">
+                            <span class="filter-label">Sort</span>
+                            <span class="filter-value" id="sortFilterValue">Popular</span>
+                            <span class="filter-arrow">▼</span>
+                        </button>
+                        
+                        <!-- Clear Filters -->
+                        <button class="clear-filters-btn focusable" id="clearFiltersBtn" data-focus-row="filters">
+                            Clear All
+                        </button>
+                    </div>
+                </div>
+                <div class="content-grid" id="browseGrid">
+                    <!-- Grid items will be dynamically populated -->
+                </div>
+                <div class="load-more" id="browseLoadMore">
+                    <button class="btn btn-secondary focusable" id="loadMoreBtn" data-focus-row="loadmore">
+                        Load More
+                    </button>
+                </div>
+            </section>
+
+            <!-- Search View -->
+            <section id="searchView" class="view">
+                <div class="search-header">
+                    <h2 class="view-title">Search</h2>
+                    <div class="search-input-container">
+                        <input type="text" 
+                               id="searchInput" 
+                               class="search-input focusable" 
+                               placeholder="Search movies and TV shows..."
+                               data-focus-row="search-input">
+                        <button class="search-clear focusable" id="searchClear" data-focus-row="search-input">✕</button>
+                    </div>
+                </div>
+                <div class="search-results" id="searchResults">
+                    <p class="search-placeholder">Enter a search term to find movies and TV shows</p>
+                </div>
+            </section>
+
+            <!-- Ask Flick AI View -->
+            <section id="askFlickView" class="view">
+                <div class="ask-flick-container">
+                    <!-- Header with Flick avatar -->
+                    <div class="ask-flick-header">
+                        <div class="ask-flick-avatar">
+                            <span class="avatar-icon">🎬</span>
+                        </div>
+                        <div class="ask-flick-info">
+                            <h2>Flick</h2>
+                            <p>Your AI Movie & Show Expert</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat messages area -->
+                    <div class="ask-flick-chat" id="askFlickChat">
+                        <div class="flick-message assistant">
+                            <p>What are you in the mood for? Describe the kind of movie or show you want, and I'll find perfect matches!</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Input area -->
+                    <div class="ask-flick-input-area">
+                        <div class="ask-flick-input-row">
+                            <input type="text" 
+                                   id="askFlickInput" 
+                                   class="ask-flick-input focusable"
+                                   placeholder="Describe what you're looking for..."
+                                   data-focus-row="askflick-input"
+                                   autocomplete="off">
+                            
+                            <!-- Voice button -->
+                            <button class="voice-btn focusable" 
+                                    id="voiceInputBtn" 
+                                    data-focus-row="askflick-input"
+                                    title="Speak your question">
+                                <svg class="mic-icon" viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+                                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                                </svg>
+                                <span class="voice-label" id="voiceLabel">Speak</span>
+                            </button>
+                            
+                            <!-- Send button -->
+                            <button class="send-btn focusable" 
+                                    id="askFlickSend"
+                                    data-focus-row="askflick-input"
+                                    title="Send question">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+                                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Quick suggestions -->
+                        <div class="ask-flick-suggestions">
+                            <button class="suggestion-chip focusable" data-query="Something like Inception but more mind-bending" data-focus-row="askflick-suggestions">Mind-bending sci-fi</button>
+                            <button class="suggestion-chip focusable" data-query="A feel-good comedy for the whole family" data-focus-row="askflick-suggestions">Family comedy</button>
+                            <button class="suggestion-chip focusable" data-query="Intense thriller with plot twists" data-focus-row="askflick-suggestions">Thriller with twists</button>
+                            <button class="suggestion-chip focusable" data-query="Critically acclaimed drama from the last 5 years" data-focus-row="askflick-suggestions">Recent acclaimed drama</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Results grid -->
+                    <div class="ask-flick-results" id="askFlickResults"></div>
+                </div>
+            </section>
+
+            <!-- Recommendations (Flix Picks) View -->
+            <section id="recommendationsView" class="view">
+                <!-- Mood Picker -->
+                <div class="mood-picker" id="moodPicker">
+                    <div class="mood-picker-header">
+                        <h2>What are you in the mood for?</h2>
+                        <p>Pick a vibe and I'll find your perfect match</p>
+                    </div>
+                    
+                    <div class="mood-grid" id="moodGrid">
+                        <button class="mood-btn focusable" data-mood="surprise" data-focus-row="mood">
+                            <span class="mood-icon">🎲</span>
+                            <span class="mood-label">Surprise Me</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="action" data-focus-row="mood">
+                            <span class="mood-icon">💥</span>
+                            <span class="mood-label">Action</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="comedy" data-focus-row="mood">
+                            <span class="mood-icon">😂</span>
+                            <span class="mood-label">Comedy</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="drama" data-focus-row="mood">
+                            <span class="mood-icon">🎭</span>
+                            <span class="mood-label">Drama</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="horror" data-focus-row="mood">
+                            <span class="mood-icon">👻</span>
+                            <span class="mood-label">Horror</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="romance" data-focus-row="mood">
+                            <span class="mood-icon">💕</span>
+                            <span class="mood-label">Romance</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="scifi" data-focus-row="mood">
+                            <span class="mood-icon">🚀</span>
+                            <span class="mood-label">Sci-Fi</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="thriller" data-focus-row="mood">
+                            <span class="mood-icon">😱</span>
+                            <span class="mood-label">Thriller</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="documentary" data-focus-row="mood">
+                            <span class="mood-icon">📽️</span>
+                            <span class="mood-label">Documentary</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="animation" data-focus-row="mood">
+                            <span class="mood-icon">🎨</span>
+                            <span class="mood-label">Animation</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="family" data-focus-row="mood">
+                            <span class="mood-icon">👨‍👩‍👧‍👦</span>
+                            <span class="mood-label">Family</span>
+                        </button>
+                        <button class="mood-btn focusable" data-mood="mystery" data-focus-row="mood">
+                            <span class="mood-icon">🔎</span>
+                            <span class="mood-label">Mystery</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Recommendations Results -->
+                <div class="recommendations-results hidden" id="recommendationsResults">
+                    <div class="recommendations-header">
+                        <button class="back-btn focusable" id="backToMoods" data-focus-row="rec-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                            <span>Change Mood</span>
+                        </button>
+                        <div class="recommendations-title">
+                            <h2 id="recTitle">Picks For You</h2>
+                            <p id="recSubtitle">Based on your taste</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-grid" id="recGrid"></div>
+                    
+                    <div class="load-more">
+                        <button class="btn btn-secondary focusable" id="recLoadMore" data-focus-row="rec-loadmore">
+                            Load More
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- In Progress View -->
+            <section id="inProgressView" class="view">
+                <div class="inprogress-header">
+                    <div class="inprogress-title">
+                        <h2>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            Continue Watching
+                        </h2>
+                        <p id="inprogressSubtitle">Pick up where you left off</p>
+                    </div>
+                    
+                    <!-- Toggle for modes -->
+                    <div class="progress-toggle" id="progressToggle">
+                        <button class="toggle-btn focusable active" data-mode="inprogress" data-focus-row="inprogress-toggle">
+                            In Progress
+                        </button>
+                        <button class="toggle-btn focusable" data-mode="next" data-focus-row="inprogress-toggle">
+                            Next Episodes
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="content-grid" id="inprogressGrid"></div>
+                
+                <div class="loading-state hidden" id="inprogressLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading your progress...</p>
+                </div>
+                
+                <div class="empty-state hidden" id="inprogressEmpty">
+                    <div class="empty-icon">▶️</div>
+                    <h3>Nothing in progress</h3>
+                    <p>Start watching something and it will appear here</p>
+                    <button class="btn btn-primary focusable" id="browseFromInProgress" data-focus-row="inprogress-empty">
+                        Browse Content
+                    </button>
+                </div>
+            </section>
+
+            <!-- Watchlist View -->
+            <section id="watchlistView" class="view">
+                <div class="watchlist-header">
+                    <h2 class="view-title">My Watchlist</h2>
+                </div>
+                <div class="content-grid" id="watchlistGrid">
+                    <p class="empty-state">Your watchlist is empty. Browse content and add items to your watchlist.</p>
+                </div>
+            </section>
+
+            <!-- Devices View -->
+            <section id="devicesView" class="view">
+                <div class="devices-header">
+                    <h2 class="view-title">My Devices</h2>
+                    <p class="view-subtitle">Connect to your FlixPicks MediaOS box to start streaming</p>
+                </div>
+                <div class="devices-content">
+                    <div class="device-list" id="deviceList">
+                        <!-- Devices will be dynamically populated -->
+                    </div>
+                    <div class="add-device">
+                        <button class="btn btn-secondary focusable" id="addDeviceBtn" data-focus-row="devices">
+                            <span class="btn-icon">+</span>
+                            Add Device Manually
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Details View (overlay) -->
+            <section id="detailsView" class="view details-overlay">
+                <div class="details-backdrop" id="detailsBackdrop"></div>
+                <div class="details-gradient"></div>
+                <div class="details-content">
+                    <div class="details-poster">
+                        <img id="detailsPoster" src="" alt="">
+                    </div>
+                    <div class="details-info">
+                        <h1 class="details-title" id="detailsTitle"></h1>
+                        <div class="details-meta" id="detailsMeta"></div>
+                        <p class="details-overview" id="detailsOverview"></p>
+                        
+                        <!-- User Ratings & Actions -->
+                        <div class="details-user-actions">
+                            <!-- Star Rating -->
+                            <div class="star-rating" id="detailsStarRating">
+                                <span class="rating-label">Your Rating:</span>
+                                <div class="stars">
+                                    <button class="star focusable" data-rating="1" data-focus-row="details-rating">★</button>
+                                    <button class="star focusable" data-rating="2" data-focus-row="details-rating">★</button>
+                                    <button class="star focusable" data-rating="3" data-focus-row="details-rating">★</button>
+                                    <button class="star focusable" data-rating="4" data-focus-row="details-rating">★</button>
+                                    <button class="star focusable" data-rating="5" data-focus-row="details-rating">★</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <button class="action-btn like-btn focusable" id="detailsLikeBtn" data-focus-row="details-actions">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                    </svg>
+                                    <span>Like</span>
+                                </button>
+                                
+                                <button class="action-btn skip-btn focusable" id="detailsSkipBtn" data-focus-row="details-actions">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                    <span>Not Interested</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="details-providers" id="detailsProviders">
+                            <h3>Available On</h3>
+                            <div class="provider-list" id="providerList"></div>
+                        </div>
+                        <div class="details-actions">
+                            <button class="btn btn-primary focusable" id="detailsPlayBtn" data-focus-row="details-actions">
+                                <span class="btn-icon">▶</span>
+                                Play on Device
+                            </button>
+                            <button class="btn btn-secondary focusable" id="detailsWatchlistBtn" data-focus-row="details-actions">
+                                <span class="btn-icon">+</span>
+                                Add to Watchlist
+                            </button>
+                            <button class="btn btn-secondary focusable" id="detailsTrailerBtn" data-focus-row="details-actions">
+                                <span class="btn-icon">🎬</span>
+                                Watch Trailer
+                            </button>
+                            <button class="btn btn-ghost focusable" id="detailsCloseBtn" data-focus-row="details-actions">
+                                <span class="btn-icon">←</span>
+                                Back
+                            </button>
+                        </div>
+                        
+                        <!-- TV Show Seasons (shown for TV content) -->
+                        <div class="seasons-section hidden" id="seasonsSection">
+                            <h3>Seasons</h3>
+                            <div class="season-tabs" id="seasonTabs"></div>
+                            <div class="episodes-list" id="episodesList"></div>
+                        </div>
+                        
+                        <div class="details-cast" id="detailsCast">
+                            <h3>Cast</h3>
+                            <div class="cast-list" id="castList"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Trailer Modal -->
+            <div id="trailerModal" class="trailer-modal hidden">
+                <div class="trailer-backdrop" id="trailerBackdrop"></div>
+                <div class="trailer-container">
+                    <button class="trailer-close focusable" id="trailerClose" data-focus-row="trailer">×</button>
+                    <div class="trailer-player" id="trailerPlayer">
+                        <!-- YouTube iframe will be inserted here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Login Modal -->
+            <div id="loginModal" class="modal-overlay hidden">
+                <div class="login-modal">
+                    <button class="modal-close focusable" id="loginModalClose" data-focus-row="login">×</button>
+                    
+                    <div class="login-header">
+                        <h2>Sign In</h2>
+                        <p>Sign in to sync your watchlist and get personalized recommendations</p>
+                    </div>
+                    
+                    <div class="login-form">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" 
+                                   id="loginEmail" 
+                                   class="form-input focusable"
+                                   placeholder="your@email.com"
+                                   data-focus-row="login-form">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" 
+                                   id="loginPassword" 
+                                   class="form-input focusable"
+                                   placeholder="••••••••"
+                                   data-focus-row="login-form">
+                        </div>
+                        
+                        <button class="btn btn-primary btn-full focusable" id="loginSubmitBtn" data-focus-row="login-form">
+                            Sign In
+                        </button>
+                        
+                        <div class="login-divider">
+                            <span>or continue with</span>
+                        </div>
+                        
+                        <div class="oauth-buttons">
+                            <button class="oauth-btn focusable" id="googleLoginBtn" data-focus-row="login-oauth">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                </svg>
+                                Google
+                            </button>
+                            
+                            <button class="oauth-btn focusable" id="appleLoginBtn" data-focus-row="login-oauth">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                                </svg>
+                                Apple
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="login-footer">
+                        <p>Don't have an account? Visit <strong>flixpicks.net</strong> to sign up</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Now Playing Bar (when content is playing on device) -->
+        <div id="nowPlayingBar" class="now-playing-bar" style="display: none;">
+            <div class="now-playing-info">
+                <img id="nowPlayingPoster" class="now-playing-poster" src="" alt="">
+                <div class="now-playing-text">
+                    <span class="now-playing-title" id="nowPlayingTitle"></span>
+                    <span class="now-playing-status" id="nowPlayingStatus">Playing</span>
+                </div>
+            </div>
+            <div class="now-playing-controls">
+                <button class="control-btn focusable" id="controlPrev" data-focus-row="controls">⏮</button>
+                <button class="control-btn focusable" id="controlPlayPause" data-focus-row="controls">⏸</button>
+                <button class="control-btn focusable" id="controlNext" data-focus-row="controls">⏭</button>
+                <button class="control-btn focusable" id="controlStop" data-focus-row="controls">⏹</button>
+            </div>
+            <div class="now-playing-progress">
+                <span id="nowPlayingTime">0:00</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="nowPlayingProgress"></div>
+                </div>
+                <span id="nowPlayingDuration">0:00</span>
+            </div>
+        </div>
+
+        <!-- Modal Container -->
+        <div id="modalContainer" class="modal-container" style="display: none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content" id="modalContent">
+                <!-- Modal content will be dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Sign In Modal (Device Flow) -->
+        <div id="signInModal" class="sign-in-modal hidden">
+            <div class="sign-in-backdrop"></div>
+            <div class="sign-in-content">
+                <button class="sign-in-close focusable" id="cancelSignInBtn" data-focus-row="signin">×</button>
+                
+                <div class="sign-in-header">
+                    <img src="assets/images/logo.svg" alt="FlixPicks" class="sign-in-logo">
+                    <h2>Sign In with Google</h2>
+                </div>
+                
+                <div class="sign-in-body">
+                    <div class="sign-in-instructions">
+                        <p>To sign in, use your phone or computer:</p>
+                        
+                        <div class="sign-in-step">
+                            <span class="step-number">1</span>
+                            <span class="step-text">Go to <strong id="signInUrl">google.com/device</strong></span>
+                        </div>
+                        
+                        <div class="sign-in-step">
+                            <span class="step-number">2</span>
+                            <span class="step-text">Enter this code:</span>
+                        </div>
+                        
+                        <div class="device-code-display">
+                            <span class="device-code" id="deviceCode">----</span>
+                        </div>
+                        
+                        <div class="sign-in-qr">
+                            <p>Or scan this QR code:</p>
+                            <img id="signInQR" src="" alt="QR Code" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="sign-in-status" id="signInStatus">
+                        <div class="sign-in-spinner" id="signInSpinner"></div>
+                        <p class="sign-in-message" id="signInMessage">Waiting for authorization...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toastContainer" class="toast-container"></div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/device.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/streaming.js"></script>
+    <script src="js/input-switcher.js"></script>
+    <script src="js/views.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+

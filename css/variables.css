@@ -1,0 +1,263 @@
+/**
+ * FlixPicks TV App - CSS Variables
+ * Design tokens adapted from FlixPicks.net for 10-foot TV UI
+ */
+
+:root {
+    /* ============================================
+       COLOR PALETTE
+       Matching FlixPicks.net with TV optimizations
+       ============================================ */
+    
+    /* Background Colors */
+    --bg-primary: #0a0a14;
+    --bg-secondary: #1a1a2e;
+    --bg-card: #252542;
+    --bg-card-hover: #353560;
+    --bg-overlay: rgba(10, 10, 20, 0.95);
+    --bg-modal: rgba(10, 10, 20, 0.98);
+    
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0b0;
+    --text-muted: #6a6a7a;
+    --text-accent: #3B82F6;
+    
+    /* Accent Colors */
+    --accent-primary: #3B82F6;
+    --accent-primary-hover: #2563EB;
+    --accent-secondary: #1E40AF;
+    --accent-gold: #FFD700;
+    --accent-amber: #F59E0B;
+    
+    /* Status Colors */
+    --success: #22c55e;
+    --success-bg: rgba(34, 197, 94, 0.15);
+    --danger: #E53935;
+    --danger-bg: rgba(229, 57, 53, 0.15);
+    --warning: #FFD700;
+    --warning-bg: rgba(255, 215, 0, 0.15);
+    --info: #3B82F6;
+    --info-bg: rgba(59, 130, 246, 0.15);
+    
+    /* Focus & Selection (critical for TV) */
+    --focus-ring: #3B82F6;
+    --focus-ring-width: 4px;
+    --focus-glow: 0 0 0 4px rgba(59, 130, 246, 0.4);
+    --focus-bg: rgba(59, 130, 246, 0.15);
+    --selected-bg: rgba(59, 130, 246, 0.25);
+    
+    /* ============================================
+       TYPOGRAPHY
+       Larger sizes for 10-foot viewing distance
+       ============================================ */
+    
+    /* Font Family */
+    --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    
+    /* Font Sizes (scaled up for TV) */
+    --text-xs: 18px;
+    --text-sm: 22px;
+    --text-base: 26px;
+    --text-lg: 32px;
+    --text-xl: 40px;
+    --text-2xl: 52px;
+    --text-3xl: 68px;
+    --text-4xl: 88px;
+    
+    /* Font Weights */
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+    
+    /* Line Heights */
+    --leading-tight: 1.2;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.7;
+    
+    /* ============================================
+       SPACING
+       Generous spacing for TV layout
+       ============================================ */
+    
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --space-9: 96px;
+    --space-10: 128px;
+    
+    /* Layout Spacing */
+    --header-height: 100px;
+    --content-padding: 60px;
+    --row-gap: 48px;
+    --card-gap: 24px;
+    
+    /* ============================================
+       SIZING
+       ============================================ */
+    
+    /* Card Sizes */
+    --card-width: 220px;
+    --card-height: 330px;
+    --card-width-lg: 280px;
+    --card-height-lg: 420px;
+    
+    /* Poster Aspect Ratio */
+    --poster-ratio: 2 / 3;
+    
+    /* Button Sizes */
+    --btn-height: 64px;
+    --btn-height-sm: 48px;
+    --btn-height-lg: 80px;
+    --btn-padding: 24px 48px;
+    --btn-padding-sm: 16px 32px;
+    
+    /* ============================================
+       BORDERS & RADIUS
+       ============================================ */
+    
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    --border-width: 2px;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-color-focus: var(--accent-primary);
+    
+    /* ============================================
+       SHADOWS & EFFECTS
+       ============================================ */
+    
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
+    
+    --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.3);
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.5);
+    
+    /* ============================================
+       TRANSITIONS
+       Smooth but not too slow for TV
+       ============================================ */
+    
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow: 400ms ease;
+    --transition-bounce: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* ============================================
+       Z-INDEX SCALE
+       ============================================ */
+    
+    --z-base: 1;
+    --z-header: 100;
+    --z-overlay: 200;
+    --z-modal: 300;
+    --z-toast: 400;
+    --z-loading: 500;
+    
+    /* ============================================
+       GRADIENTS
+       ============================================ */
+    
+    --gradient-hero: linear-gradient(
+        to right,
+        rgba(10, 10, 20, 1) 0%,
+        rgba(10, 10, 20, 0.9) 30%,
+        rgba(10, 10, 20, 0.6) 60%,
+        rgba(10, 10, 20, 0) 100%
+    );
+    
+    --gradient-hero-bottom: linear-gradient(
+        to top,
+        rgba(10, 10, 20, 1) 0%,
+        rgba(10, 10, 20, 0.8) 30%,
+        rgba(10, 10, 20, 0) 100%
+    );
+    
+    --gradient-card: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.5) 50%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    
+    --gradient-overlay: linear-gradient(
+        135deg,
+        var(--bg-secondary) 0%,
+        var(--bg-primary) 100%
+    );
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   TV resolutions: 720p, 1080p, 4K
+   ============================================ */
+
+/* 720p TVs */
+@media (max-height: 720px) {
+    :root {
+        --text-xs: 14px;
+        --text-sm: 16px;
+        --text-base: 20px;
+        --text-lg: 24px;
+        --text-xl: 32px;
+        --text-2xl: 40px;
+        --text-3xl: 52px;
+        --text-4xl: 68px;
+        
+        --header-height: 80px;
+        --content-padding: 40px;
+        --row-gap: 32px;
+        --card-gap: 16px;
+        
+        --card-width: 160px;
+        --card-height: 240px;
+        --card-width-lg: 200px;
+        --card-height-lg: 300px;
+        
+        --btn-height: 48px;
+        --btn-height-lg: 60px;
+    }
+}
+
+/* 4K TVs */
+@media (min-height: 2160px) {
+    :root {
+        --text-xs: 36px;
+        --text-sm: 44px;
+        --text-base: 52px;
+        --text-lg: 64px;
+        --text-xl: 80px;
+        --text-2xl: 104px;
+        --text-3xl: 136px;
+        --text-4xl: 176px;
+        
+        --header-height: 200px;
+        --content-padding: 120px;
+        --row-gap: 96px;
+        --card-gap: 48px;
+        
+        --card-width: 440px;
+        --card-height: 660px;
+        --card-width-lg: 560px;
+        --card-height-lg: 840px;
+        
+        --btn-height: 128px;
+        --btn-height-lg: 160px;
+        
+        --focus-ring-width: 8px;
+    }
+}
+

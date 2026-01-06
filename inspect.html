@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Inspector</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a2e; color: #fff; }
+        pre { background: #0f0f1a; padding: 15px; overflow: auto; max-height: 400px; white-space: pre-wrap; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; background: #3B82F6; color: white; border: none; border-radius: 5px; }
+        .info { background: #252542; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>FlixPicks DOM Inspector</h1>
+    
+    <div class="info">
+        <strong>Instructions:</strong> Open the main TV app in another tab, wait for it to load, then come back here and click "Inspect DOM"
+    </div>
+    
+    <button onclick="inspectMainApp()">Inspect DOM (opens TV app)</button>
+    <button onclick="checkElements()">Check Key Elements</button>
+    
+    <h2>Results:</h2>
+    <pre id="result">Click a button...</pre>
+    
+    <script>
+        let tvWindow = null;
+        
+        function inspectMainApp() {
+            tvWindow = window.open('/tv/', 'tvapp');
+            document.getElementById('result').textContent = 'TV app opened. Wait 3 seconds for it to load, then click "Check Key Elements"';
+        }
+        
+        function checkElements() {
+            if (!tvWindow || tvWindow.closed) {
+                document.getElementById('result').textContent = 'TV app window not open. Click "Inspect DOM" first.';
+                return;
+            }
+            
+            try {
+                const doc = tvWindow.document;
+                const results = [];
+                
+                // Check key elements
+                const checks = [
+                    { id: 'app', name: 'App Container' },
+                    { id: 'loadingScreen', name: 'Loading Screen' },
+                    { id: 'homeView', name: 'Home View' },
+                    { id: 'heroBanner', name: 'Hero Banner' },
+                    { id: 'heroTitle', name: 'Hero Title' },
+                    { id: 'homeRows', name: 'Home Rows Container' }
+                ];
+                
+                checks.forEach(check => {
+                    const el = doc.getElementById(check.id);
+                    if (el) {
+                        const styles = tvWindow.getComputedStyle(el);
+                        results.push(`✓ ${check.name} (#${check.id}):
+  - display: ${styles.display}
+  - visibility: ${styles.visibility}
+  - opacity: ${styles.opacity}
+  - position: ${styles.position}
+  - width: ${styles.width}
+  - height: ${styles.height}
+  - overflow: ${styles.overflow}
+  - classList: ${el.className}
+  - children: ${el.children.length}
+  - innerHTML length: ${el.innerHTML.length}`);
+            
+                        if (check.id === 'homeRows') {
+                            results.push(`  - First child: ${el.firstElementChild?.className || 'none'}`);
+                            results.push(`  - Content rows HTML preview: ${el.innerHTML.substring(0, 200)}...`);
+                        }
+                    } else {
+                        results.push(`✗ ${check.name} (#${check.id}): NOT FOUND`);
+                    }
+                });
+                
+                // Check if cards exist
+                const cards = doc.querySelectorAll('.card');
+                results.push(`\n📦 Cards found: ${cards.length}`);
+                if (cards.length > 0) {
+                    const firstCard = cards[0];
+                    const cardStyles = tvWindow.getComputedStyle(firstCard);
+                    results.push(`First card styles:
+  - display: ${cardStyles.display}
+  - visibility: ${cardStyles.visibility}
+  - opacity: ${cardStyles.opacity}
+  - width: ${cardStyles.width}
+  - height: ${cardStyles.height}`);
+                }
+                
+                // Check content-row
+                const rows = doc.querySelectorAll('.content-row');
+                results.push(`\n📋 Content rows found: ${rows.length}`);
+                
+                document.getElementById('result').textContent = results.join('\n\n');
+                
+            } catch (e) {
+                document.getElementById('result').textContent = 'Error: ' + e.message + '\n\nThis might be a cross-origin issue. Try opening dev tools on the TV app directly.';
+            }
+        }
+    </script>
+</body>
+</html>
+

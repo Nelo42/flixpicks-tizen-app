@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a2e; color: #fff; }
+        pre { background: #0f0f1a; padding: 15px; overflow: auto; max-height: 400px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .error { color: #ff6b6b; }
+        .success { color: #51cf66; }
+    </style>
+</head>
+<body>
+    <h1>FlixPicks API Test</h1>
+    <p>Current URL: <span id="currentUrl"></span></p>
+    <p>API Base: <span id="apiBase"></span></p>
+    
+    <div>
+        <button onclick="testTrending()">Test Trending</button>
+        <button onclick="testBrowse()">Test Browse</button>
+        <button onclick="testGenres()">Test Genres</button>
+    </div>
+    
+    <h2>Result:</h2>
+    <pre id="result">Click a button to test...</pre>
+    
+    <script>
+        const hostname = window.location.hostname;
+        let API_BASE;
+        
+        if (hostname === 'flixpicks.net' || hostname.endsWith('.flixpicks.net')) {
+            API_BASE = '/api/v1';
+        } else {
+            API_BASE = 'https://flixpicks.net/api/v1';
+        }
+        
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('apiBase').textContent = API_BASE;
+        
+        async function testAPI(endpoint) {
+            const resultEl = document.getElementById('result');
+            resultEl.textContent = 'Loading...';
+            resultEl.className = '';
+            
+            try {
+                const url = API_BASE + endpoint;
+                console.log('Fetching:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                resultEl.textContent = JSON.stringify(data, null, 2);
+                resultEl.className = 'success';
+                
+                console.log('Response:', data);
+            } catch (error) {
+                resultEl.textContent = 'Error: ' + error.message + '\n\nCheck browser console for details.';
+                resultEl.className = 'error';
+                console.error('API Error:', error);
+            }
+        }
+        
+        function testTrending() {
+            testAPI('/trending?media_type=movie&window=week&filter_available=false');
+        }
+        
+        function testBrowse() {
+            testAPI('/browse?type=movie&sort=popularity&per_page=5');
+        }
+        
+        function testGenres() {
+            testAPI('/genres?type=movie');
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        xmlns:tizen="http://tizen.org/ns/widgets" 
+        id="http://flixpicks.net/tv" 
+        version="1.0.0" 
+        viewmodes="maximized">
+    
+    <!-- Application Identity -->
+    <tizen:application id="net.flixpicks.tv" 
+                       package="FlixPicksTV" 
+                       required_version="2.3"/>
+    
+    <!-- Entry Point -->
+    <content src="index.html"/>
+    
+    <!-- App Metadata -->
+    <name>FlixPicks</name>
+    <description>Browse movies and TV shows, control your MediaOS streaming box</description>
+    <author email="support@flixpicks.net" href="https://flixpicks.net">
+        FlixPicks
+    </author>
+    <license>Proprietary</license>
+    
+    <!-- Icons -->
+    <icon src="icon.png"/>
+    <!-- Fallback to SVG if PNG not available -->
+    <!-- <icon src="assets/images/icon.svg"/> -->
+    
+    <!-- Screen Features -->
+    <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
+    <feature name="http://tizen.org/feature/screen.size.normal.720.1280"/>
+    
+    <!-- Required Privileges -->
+    <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+    <tizen:privilege name="http://tizen.org/privilege/appmanager.launch"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.info"/>
+    <tizen:privilege name="http://tizen.org/privilege/systeminfo"/>
+    <tizen:privilege name="http://tizen.org/privilege/filesystem.read"/>
+    <tizen:privilege name="http://tizen.org/privilege/filesystem.write"/>
+    <tizen:privilege name="http://tizen.org/privilege/network.get"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.display"/>
+    <tizen:privilege name="http://tizen.org/privilege/voicecontrol.manager"/>
+    <tizen:privilege name="http://tizen.org/privilege/recorder"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.window"/>
+    
+    <!-- Profile -->
+    <tizen:profile name="tv-samsung"/>
+    
+    <!-- Settings -->
+    <tizen:setting screen-orientation="landscape" 
+                   context-menu="enable" 
+                   background-support="disable" 
+                   encryption="disable" 
+                   install-location="auto"/>
+    
+    <!-- Access Policy for external resources -->
+    <access origin="https://flixpicks.net" subdomains="true"/>
+    <access origin="https://image.tmdb.org" subdomains="true"/>
+    <access origin="https://www.youtube.com" subdomains="true"/>
+    <access origin="https://oauth2.googleapis.com" subdomains="true"/>
+    <access origin="https://accounts.google.com" subdomains="true"/>
+    <access origin="https://api.qrserver.com" subdomains="true"/>
+    <access origin="wss://*" subdomains="true"/>
+    <access origin="ws://*" subdomains="true"/>
+    
+    <!-- Content Security Policy -->
+    <tizen:content-security-policy>
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' 'unsafe-eval';
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' https://image.tmdb.org https://flixpicks.net https://api.qrserver.com data: blob:;
+        connect-src 'self' https://flixpicks.net https://oauth2.googleapis.com https://accounts.google.com wss://* ws://*;
+        media-src 'self' blob:;
+        frame-src 'self' https://www.youtube.com https://youtube.com;
+    </tizen:content-security-policy>
+    
+</widget>
+

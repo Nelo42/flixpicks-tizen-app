@@ -1,0 +1,20 @@
+<svg width="185" height="185" viewBox="0 0 185 185" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="personGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#353560"/>
+      <stop offset="100%" style="stop-color:#252542"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="92.5" cy="92.5" r="92.5" fill="url(#personGradient)"/>
+  
+  <!-- Person silhouette -->
+  <g fill="#6a6a7a">
+    <!-- Head -->
+    <circle cx="92.5" cy="65" r="28"/>
+    <!-- Body -->
+    <ellipse cx="92.5" cy="145" rx="45" ry="35"/>
+  </g>
+</svg>
+

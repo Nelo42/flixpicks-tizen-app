@@ -1,0 +1,20 @@
+# Quick Deploy Commands for Mac
+
+## Download from server:
+scp admin@poedev2:/srv/www/Flixpicks_OS/tizen-app/.buildResult/FlixPicks.wgt ~/Downloads/
+
+## Connect to TV:
+~/tizen-studio/tools/sdb connect 172.31.0.117:26101
+
+## Verify connection:
+~/tizen-studio/tools/sdb devices
+
+## Install app:
+tizen install -n ~/Downloads/FlixPicks.wgt -t 172.31.0.117:26101
+
+## Run app:
+tizen run -p net.flixpicks.tv -t 172.31.0.117:26101
+
+## Troubleshooting:
+# If connection fails, check Developer Mode is enabled on TV
+# If tizen command not found: export PATH=$PATH:~/tizen-studio/tools/ide/bin

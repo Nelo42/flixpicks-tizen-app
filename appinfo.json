@@ -1,0 +1,13 @@
+{
+  "id": "net.flixpicks.tv",
+  "title": "FlixPicks",
+  "main": "index.html",
+  "icon": "icon.png",
+  "type": "web",
+  "version": "1.0.0",
+  "description": "Browse movies and TV shows, control your MediaOS streaming box",
+  "author": "FlixPicks",
+  "authorEmail": "support@flixpicks.net",
+  "website": "https://flixpicks.net"
+}
+
