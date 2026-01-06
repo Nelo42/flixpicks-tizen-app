@@ -8,6 +8,7 @@
   "description": "Browse movies and TV shows, control your MediaOS streaming box",
   "author": "FlixPicks",
   "authorEmail": "support@flixpicks.net",
-  "website": "https://flixpicks.net"
+  "website": "https://flixpicks.net",
+  "package": "FlixPicksTV"
 }
 
